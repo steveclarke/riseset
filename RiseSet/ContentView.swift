@@ -13,20 +13,6 @@ struct ContentView: View {
                 sunTimesView
             }
 
-            Divider()
-
-            HStack {
-                Button("Refresh") {
-                    model.refresh()
-                }
-
-                Spacer()
-
-                Button("Quit") {
-                    NSApplication.shared.terminate(nil)
-                }
-                .keyboardShortcut("q")
-            }
         }
         .padding()
         .frame(width: 220)
