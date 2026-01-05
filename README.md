@@ -2,8 +2,6 @@
 
 A macOS menu bar app that displays sunrise and sunset times for your current location.
 
-![RiseSet screenshot](https://github.com/user-attachments/assets/placeholder.png)
-
 ## Features
 
 - Sunrise and sunset times visible in menu bar
