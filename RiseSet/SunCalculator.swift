@@ -2,6 +2,10 @@ import Foundation
 import CoreLocation
 import Solar
 
+enum ForecastConfig {
+    static let dayCount = 7
+}
+
 struct SunTimes {
     let sunrise: Date?
     let sunset: Date?
@@ -13,6 +17,12 @@ struct SunTimes {
         let formatter = DateFormatter()
         formatter.timeStyle = .short
         formatter.dateStyle = .none
+        return formatter
+    }()
+
+    private static let shortTimeFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h:mm"
         return formatter
     }()
 
@@ -38,6 +48,18 @@ struct SunTimes {
         return formatTime(sunset)
     }
 
+    var sunriseShort: String {
+        if isPolarDay { return "—" }
+        if isPolarNight { return "—" }
+        return formatShortTime(sunrise)
+    }
+
+    var sunsetShort: String {
+        if isPolarDay { return "—" }
+        if isPolarNight { return "—" }
+        return formatShortTime(sunset)
+    }
+
     var civilDawnFormatted: String {
         if isPolarDay { return "—" }
         if isPolarNight { return "—" }
@@ -54,6 +76,27 @@ struct SunTimes {
         guard let date = date else { return "--:--" }
         return Self.timeFormatter.string(from: date)
     }
+
+    private func formatShortTime(_ date: Date?) -> String {
+        guard let date = date else { return "--:--" }
+        return Self.shortTimeFormatter.string(from: date)
+    }
+}
+
+struct DayForecast: Identifiable {
+    let id = UUID()
+    let date: Date
+    let sunTimes: SunTimes
+
+    private static let dayFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "EEE"
+        return formatter
+    }()
+
+    var dayName: String {
+        Self.dayFormatter.string(from: date)
+    }
 }
 
 struct SunCalculator {
@@ -69,5 +112,19 @@ struct SunCalculator {
             civilDusk: solar.civilSunset,
             isDaytime: solar.isDaytime
         )
+    }
+
+    func calculateForecast(for coordinate: CLLocationCoordinate2D, days: Int = ForecastConfig.dayCount) -> [DayForecast] {
+        let calendar = Calendar.current
+        var forecasts: [DayForecast] = []
+
+        for dayOffset in 1...days {
+            guard let date = calendar.date(byAdding: .day, value: dayOffset, to: Date()),
+                  let times = calculate(for: coordinate, date: date) else {
+                continue
+            }
+            forecasts.append(DayForecast(date: date, sunTimes: times))
+        }
+        return forecasts
     }
 }

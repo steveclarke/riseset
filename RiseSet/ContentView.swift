@@ -57,6 +57,10 @@ struct ContentView: View {
                 label: "Last Light",
                 time: model.civilDuskFormatted
             )
+
+            if !model.forecast.isEmpty {
+                ForecastSection(forecast: model.forecast)
+            }
         }
     }
 
@@ -104,5 +108,67 @@ struct SunTimeRow: View {
                 .fontWeight(.medium)
                 .monospacedDigit()
         }
+    }
+}
+
+struct ForecastSection: View {
+    let forecast: [DayForecast]
+    @State private var isExpanded = false
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Button(action: { withAnimation(.easeInOut(duration: 0.2)) { isExpanded.toggle() } }) {
+                HStack {
+                    Image(systemName: "chevron.right")
+                        .font(.caption)
+                        .rotationEffect(.degrees(isExpanded ? 90 : 0))
+                        .frame(width: 12)
+                    Text("Forecast")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                }
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .padding(.top, 8)
+
+            if isExpanded {
+                VStack(alignment: .leading, spacing: 6) {
+                    ForEach(forecast) { day in
+                        ForecastRow(day: day)
+                    }
+                }
+                .padding(.top, 8)
+                .transition(.opacity.combined(with: .move(edge: .top)))
+            }
+        }
+    }
+}
+
+struct ForecastRow: View {
+    let day: DayForecast
+
+    var body: some View {
+        HStack {
+            Text(day.dayName)
+                .frame(width: 36, alignment: .leading)
+                .foregroundStyle(.secondary)
+            Spacer()
+            Image(systemName: "sunrise.fill")
+                .symbolRenderingMode(.multicolor)
+                .font(.caption)
+            Text(day.sunTimes.sunriseShort)
+                .monospacedDigit()
+                .font(.callout)
+            Spacer().frame(width: 12)
+            Image(systemName: "sunset.fill")
+                .symbolRenderingMode(.multicolor)
+                .font(.caption)
+            Text(day.sunTimes.sunsetShort)
+                .monospacedDigit()
+                .font(.callout)
+        }
+        .font(.callout)
     }
 }

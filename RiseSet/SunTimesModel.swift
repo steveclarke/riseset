@@ -9,6 +9,7 @@ final class SunTimesModel: ObservableObject {
     @Published var errorMessage: String?
     @Published var isPermissionError: Bool = false
     @Published var isLoading: Bool = true
+    @Published var forecast: [DayForecast] = []
 
     private let locationService = LocationService()
     private let sunCalculator = SunCalculator()
@@ -90,8 +91,10 @@ final class SunTimesModel: ObservableObject {
         if let times = sunCalculator.calculate(for: coordinate) {
             sunTimes = times
             errorMessage = nil
+            forecast = sunCalculator.calculateForecast(for: coordinate)
         } else {
             errorMessage = "Unable to calculate sun times for this location."
+            forecast = []
         }
         isLoading = false
     }
