@@ -15,7 +15,7 @@ struct ContentView: View {
 
         }
         .padding()
-        .frame(width: 220)
+        .fixedSize()
     }
 
     private var loadingView: some View {
@@ -158,14 +158,14 @@ struct ForecastRow: View {
             Image(systemName: "sunrise.fill")
                 .symbolRenderingMode(.multicolor)
                 .font(.caption)
-            Text(day.sunTimes.sunriseShort)
+            Text(day.sunTimes.sunriseFormatted)
                 .monospacedDigit()
                 .font(.callout)
-            Spacer().frame(width: 12)
+            Spacer().frame(width: 16)
             Image(systemName: "sunset.fill")
                 .symbolRenderingMode(.multicolor)
                 .font(.caption)
-            Text(day.sunTimes.sunsetShort)
+            Text(day.sunTimes.sunsetFormatted)
                 .monospacedDigit()
                 .font(.callout)
         }
