@@ -5,6 +5,8 @@ import Solar
 struct SunTimes {
     let sunrise: Date?
     let sunset: Date?
+    let civilDawn: Date?
+    let civilDusk: Date?
     let isDaytime: Bool
 
     var sunriseFormatted: String {
@@ -13,6 +15,14 @@ struct SunTimes {
 
     var sunsetFormatted: String {
         formatTime(sunset)
+    }
+
+    var civilDawnFormatted: String {
+        formatTime(civilDawn)
+    }
+
+    var civilDuskFormatted: String {
+        formatTime(civilDusk)
     }
 
     private func formatTime(_ date: Date?) -> String {
@@ -33,6 +43,8 @@ struct SunCalculator {
         return SunTimes(
             sunrise: solar.sunrise,
             sunset: solar.sunset,
+            civilDawn: solar.civilSunrise,
+            civilDusk: solar.civilSunset,
             isDaytime: solar.isDaytime
         )
     }

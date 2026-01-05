@@ -49,6 +49,12 @@ struct ContentView: View {
             }
 
             SunTimeRow(
+                icon: "sun.horizon.fill",
+                label: "First Light",
+                time: model.civilDawnFormatted
+            )
+
+            SunTimeRow(
                 icon: "sunrise.fill",
                 label: "Sunrise",
                 time: model.sunriseFormatted
@@ -58,6 +64,12 @@ struct ContentView: View {
                 icon: "sunset.fill",
                 label: "Sunset",
                 time: model.sunsetFormatted
+            )
+
+            SunTimeRow(
+                icon: "sun.horizon.fill",
+                label: "Last Light",
+                time: model.civilDuskFormatted
             )
         }
     }
