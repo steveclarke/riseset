@@ -61,6 +61,21 @@ struct ContentView: View {
             if !model.forecast.isEmpty {
                 ForecastSection(forecast: model.forecast)
             }
+
+            if let url = model.timeAndDateURL {
+                Link(destination: url) {
+                    HStack {
+                        Spacer()
+                        Text("More at timeanddate.com")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                        Image(systemName: "arrow.up.right")
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                .padding(.top, 4)
+            }
         }
     }
 

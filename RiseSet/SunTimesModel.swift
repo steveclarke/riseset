@@ -46,6 +46,12 @@ final class SunTimesModel: ObservableObject {
         return times.isDaytime ? times.sunsetFormatted : times.sunriseFormatted
     }
 
+    var timeAndDateURL: URL? {
+        guard let coord = locationService.currentLocation else { return nil }
+        let urlString = String(format: "https://www.timeanddate.com/sun/@%.4f,%.4f", coord.latitude, coord.longitude)
+        return URL(string: urlString)
+    }
+
     init() {
         setupBindings()
         scheduleMidnightUpdate()
