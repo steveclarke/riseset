@@ -4,14 +4,10 @@ struct MenuBarLabel: View {
     @EnvironmentObject var model: SunTimesModel
 
     var body: some View {
-        HStack(spacing: 6) {
-            Image(systemName: "sunrise.fill")
+        HStack(spacing: 4) {
+            Image(systemName: model.nextEventIcon)
                 .symbolRenderingMode(.multicolor)
-            Text(model.sunriseFormatted)
-
-            Image(systemName: "sunset.fill")
-                .symbolRenderingMode(.multicolor)
-            Text(model.sunsetFormatted)
+            Text(model.nextEventTime)
         }
     }
 }

@@ -36,6 +36,16 @@ final class SunTimesModel: ObservableObject {
         sunTimes?.isDaytime ?? true
     }
 
+    var nextEventIcon: String {
+        guard let times = sunTimes else { return "sunrise.fill" }
+        return times.isDaytime ? "sunset.fill" : "sunrise.fill"
+    }
+
+    var nextEventTime: String {
+        guard let times = sunTimes else { return "--:--" }
+        return times.isDaytime ? times.sunsetFormatted : times.sunriseFormatted
+    }
+
     init() {
         setupBindings()
         scheduleMidnightUpdate()
