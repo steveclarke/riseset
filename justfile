@@ -18,7 +18,7 @@ bundle: build
     cp "RiseSet/Info.plist" "{{app_bundle}}/Contents/"
     cp "RiseSet/Assets.xcassets/AppIcon.appiconset/icon_1024.png" "{{app_bundle}}/Contents/Resources/AppIcon.png"
     echo -n "APPL????" > "{{app_bundle}}/Contents/PkgInfo"
-    codesign --force --deep --sign - "{{app_bundle}}"
+    codesign --force --deep --sign - --entitlements "RiseSet/RiseSet.entitlements" "{{app_bundle}}"
     @echo "Created {{app_bundle}}"
 
 # Build, bundle, and run

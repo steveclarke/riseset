@@ -9,28 +9,50 @@ struct SunTimes {
     let civilDusk: Date?
     let isDaytime: Bool
 
+    private static let timeFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+        formatter.dateStyle = .none
+        return formatter
+    }()
+
+    /// True if in polar day (sun never sets)
+    var isPolarDay: Bool {
+        sunrise == nil && sunset == nil && isDaytime
+    }
+
+    /// True if in polar night (sun never rises)
+    var isPolarNight: Bool {
+        sunrise == nil && sunset == nil && !isDaytime
+    }
+
     var sunriseFormatted: String {
-        formatTime(sunrise)
+        if isPolarDay { return "Sun up" }
+        if isPolarNight { return "No rise" }
+        return formatTime(sunrise)
     }
 
     var sunsetFormatted: String {
-        formatTime(sunset)
+        if isPolarDay { return "No set" }
+        if isPolarNight { return "Sun down" }
+        return formatTime(sunset)
     }
 
     var civilDawnFormatted: String {
-        formatTime(civilDawn)
+        if isPolarDay { return "—" }
+        if isPolarNight { return "—" }
+        return formatTime(civilDawn)
     }
 
     var civilDuskFormatted: String {
-        formatTime(civilDusk)
+        if isPolarDay { return "—" }
+        if isPolarNight { return "—" }
+        return formatTime(civilDusk)
     }
 
     private func formatTime(_ date: Date?) -> String {
         guard let date = date else { return "--:--" }
-        let formatter = DateFormatter()
-        formatter.timeStyle = .short
-        formatter.dateStyle = .none
-        return formatter.string(from: date)
+        return Self.timeFormatter.string(from: date)
     }
 }
 

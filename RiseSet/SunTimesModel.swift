@@ -40,6 +40,10 @@ final class SunTimesModel: ObservableObject {
         locationService.requestAuthorization()
     }
 
+    deinit {
+        midnightTimer?.invalidate()
+    }
+
     private func setupBindings() {
         locationService.$currentLocation
             .compactMap { $0 }
