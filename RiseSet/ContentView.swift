@@ -87,12 +87,14 @@ struct ContentView: View {
                 .font(.caption)
                 .foregroundStyle(.secondary)
 
-            Button("Open System Settings") {
-                if let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_LocationServices") {
-                    NSWorkspace.shared.open(url)
+            if model.isPermissionError {
+                Button("Open System Settings") {
+                    if let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_LocationServices") {
+                        NSWorkspace.shared.open(url)
+                    }
                 }
+                .font(.caption)
             }
-            .font(.caption)
         }
     }
 }

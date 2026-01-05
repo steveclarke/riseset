@@ -7,6 +7,7 @@ final class SunTimesModel: ObservableObject {
     @Published var sunTimes: SunTimes?
     @Published var locationName: String?
     @Published var errorMessage: String?
+    @Published var isPermissionError: Bool = false
     @Published var isLoading: Bool = true
 
     private let locationService = LocationService()
@@ -63,6 +64,9 @@ final class SunTimesModel: ObservableObject {
                 }
             }
             .store(in: &cancellables)
+
+        locationService.$isPermissionError
+            .assign(to: &$isPermissionError)
     }
 
     private func scheduleMidnightUpdate() {
