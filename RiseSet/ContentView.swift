@@ -93,7 +93,6 @@ struct SunTimeRow: View {
     var body: some View {
         HStack {
             Image(systemName: icon)
-                .symbolRenderingMode(.multicolor)
                 .frame(width: 20)
 
             Text(label)
