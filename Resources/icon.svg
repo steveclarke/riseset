@@ -1,0 +1,32 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background with gradient -->
+  <defs>
+    <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a3e"/>
+      <stop offset="100%" style="stop-color:#f59e42"/>
+    </linearGradient>
+    <linearGradient id="sunGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffe066"/>
+      <stop offset="100%" style="stop-color:#ffb347"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Rounded square background -->
+  <rect width="1024" height="1024" rx="180" fill="url(#skyGradient)"/>
+
+  <!-- Ground -->
+  <rect y="680" width="1024" height="344" rx="0" fill="#1a1a2e"/>
+
+  <!-- Horizon Line -->
+  <path d="M100 680H924" stroke="#ffffff" stroke-width="8" stroke-linecap="round" opacity="0.3"/>
+
+  <!-- The Sun (Semicircle) -->
+  <path d="M724 680C724 563 627 468 512 468C397 468 300 563 300 680" fill="url(#sunGradient)"/>
+
+  <!-- Light Rays -->
+  <path d="M512 380V280" stroke="#ffe066" stroke-width="40" stroke-linecap="round"/>
+  <path d="M700 450L780 370" stroke="#ffe066" stroke-width="40" stroke-linecap="round"/>
+  <path d="M324 450L244 370" stroke="#ffe066" stroke-width="40" stroke-linecap="round"/>
+  <path d="M780 580L860 540" stroke="#ffe066" stroke-width="40" stroke-linecap="round"/>
+  <path d="M244 580L164 540" stroke="#ffe066" stroke-width="40" stroke-linecap="round"/>
+</svg>
