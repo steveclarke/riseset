@@ -123,7 +123,7 @@ struct ForecastSection: View {
                         .font(.caption)
                         .rotationEffect(.degrees(isExpanded ? 90 : 0))
                         .frame(width: 12)
-                    Text("Forecast")
+                    Text("Next \(ForecastConfig.dayCount) days")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                     Spacer()
