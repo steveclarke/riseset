@@ -43,7 +43,12 @@ final class SunTimesModel: ObservableObject {
 
     var nextEventTime: String {
         guard let times = sunTimes else { return "--:--" }
-        return times.isDaytime ? times.sunsetFormatted : times.sunriseFormatted
+        if times.isDaytime {
+            return times.sunsetFormatted
+        } else {
+            // After sunset, show tomorrow's sunrise from forecast
+            return forecast.first?.sunTimes.sunriseFormatted ?? times.sunriseFormatted
+        }
     }
 
     var timeAndDateURL: URL? {
