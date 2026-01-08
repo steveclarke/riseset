@@ -32,6 +32,10 @@ final class SunTimesModel: ObservableObject {
         sunTimes?.civilDuskFormatted ?? "--:--"
     }
 
+    var dayLengthFormatted: String {
+        sunTimes?.dayLengthFormatted ?? "—"
+    }
+
     var isDaytime: Bool {
         sunTimes?.isDaytime ?? true
     }

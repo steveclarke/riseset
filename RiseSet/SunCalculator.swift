@@ -72,6 +72,16 @@ struct SunTimes {
         return formatTime(civilDusk)
     }
 
+    var dayLengthFormatted: String {
+        if isPolarDay { return "24h 0m" }
+        if isPolarNight { return "0h 0m" }
+        guard let sunrise = sunrise, let sunset = sunset else { return "—" }
+        let seconds = Int(sunset.timeIntervalSince(sunrise))
+        let hours = seconds / 3600
+        let minutes = (seconds % 3600) / 60
+        return "\(hours)h \(minutes)m"
+    }
+
     private func formatTime(_ date: Date?) -> String {
         guard let date = date else { return "--:--" }
         return Self.timeFormatter.string(from: date)

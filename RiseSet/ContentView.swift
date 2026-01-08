@@ -58,6 +58,12 @@ struct ContentView: View {
                 time: model.civilDuskFormatted
             )
 
+            SunTimeRow(
+                icon: "clock",
+                label: "Day Length",
+                time: model.dayLengthFormatted
+            )
+
             if !model.forecast.isEmpty {
                 ForecastSection(forecast: model.forecast)
             }
