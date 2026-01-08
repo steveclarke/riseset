@@ -1,5 +1,6 @@
 import SwiftUI
 import MenuBarExtraAccess
+import ServiceManagement
 
 @main
 struct RiseSetApp: App {
@@ -28,6 +29,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var statusItem: NSStatusItem?
     var sunTimesModel: SunTimesModel?
     private var eventMonitor: Any?
+
+    private var isLaunchAtLoginEnabled: Bool {
+        SMAppService.mainApp.status == .enabled
+    }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         eventMonitor = NSEvent.addLocalMonitorForEvents(matching: .rightMouseDown) { [weak self] event in
@@ -66,6 +71,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         menu.addItem(NSMenuItem.separator())
 
+        let launchAtLoginItem = NSMenuItem(
+            title: "Launch at Login",
+            action: #selector(toggleLaunchAtLogin),
+            keyEquivalent: ""
+        )
+        launchAtLoginItem.target = self
+        launchAtLoginItem.state = isLaunchAtLoginEnabled ? .on : .off
+        menu.addItem(launchAtLoginItem)
+
+        menu.addItem(NSMenuItem.separator())
+
         let quitItem = NSMenuItem(title: "Quit", action: #selector(quit), keyEquivalent: "q")
         quitItem.target = self
         menu.addItem(quitItem)
@@ -75,6 +91,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @objc func refresh() {
         sunTimesModel?.refresh()
+    }
+
+    @objc func toggleLaunchAtLogin() {
+        do {
+            if isLaunchAtLoginEnabled {
+                try SMAppService.mainApp.unregister()
+            } else {
+                try SMAppService.mainApp.register()
+            }
+        } catch {
+            print("Failed to toggle launch at login: \(error.localizedDescription)")
+        }
     }
 
     @objc func quit() {
