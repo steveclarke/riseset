@@ -20,15 +20,57 @@ final class LocationService: NSObject, ObservableObject {
         authorizationStatus = locationManager.authorizationStatus
     }
 
+    private func setPermissionError(_ message: String) {
+        isPermissionError = true
+        errorMessage = message
+    }
+
     func requestAuthorization() {
-        locationManager.requestWhenInUseAuthorization()
+        let status = locationManager.authorizationStatus
+        authorizationStatus = status
+
+        switch status {
+        case .authorizedWhenInUse, .authorizedAlways:
+            requestLocation()
+        case .denied:
+            setPermissionError("Location access denied. Enable in System Settings > Privacy & Security > Location Services.")
+        case .restricted:
+            setPermissionError("Location access is restricted on this device.")
+        case .notDetermined:
+            locationManager.requestWhenInUseAuthorization()
+        @unknown default:
+            break
+        }
     }
 
     func requestLocation() {
         errorMessage = nil
         isPermissionError = false
         locationTimeout?.cancel()
-        locationManager.requestLocation()
+
+        guard CLLocationManager.locationServicesEnabled() else {
+            setPermissionError("Location services are disabled. Enable in System Settings > Privacy & Security > Location Services.")
+            return
+        }
+
+        let status = locationManager.authorizationStatus
+        authorizationStatus = status
+
+        switch status {
+        case .authorizedWhenInUse, .authorizedAlways:
+            locationManager.requestLocation()
+        case .notDetermined:
+            requestAuthorization()
+            return
+        case .denied:
+            setPermissionError("Location access denied. Enable in System Settings > Privacy & Security > Location Services.")
+            return
+        case .restricted:
+            setPermissionError("Location access is restricted on this device.")
+            return
+        @unknown default:
+            return
+        }
 
         // Timeout after 30 seconds
         locationTimeout = Task {
@@ -64,11 +106,9 @@ extension LocationService: CLLocationManagerDelegate {
             case .authorizedWhenInUse, .authorizedAlways:
                 requestLocation()
             case .denied:
-                isPermissionError = true
-                errorMessage = "Location access denied. Enable in System Settings > Privacy & Security > Location Services."
+                setPermissionError("Location access denied. Enable in System Settings > Privacy & Security > Location Services.")
             case .restricted:
-                isPermissionError = true
-                errorMessage = "Location access is restricted on this device."
+                setPermissionError("Location access is restricted on this device.")
             case .notDetermined:
                 break
             @unknown default:
